@@ -1,0 +1,83 @@
+{
+  "_version": "1.58.0",
+  "sap.app": {
+    "id": "sap.plm.translator",
+    "type": "application",
+    "title": "PLM Translation Management",
+    "description": "SAP Fiori Elements PLM Translation Application",
+    "dataSources": {
+      "mainService": {
+        "uri": "/api/translator/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "models": {
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      }
+    },
+    "routing": {
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "TestResultsList",
+          "target": "TestResultsList"
+        },
+        {
+          "pattern": "TestResults({key}):?query:",
+          "name": "TestResultsDetails",
+          "target": "TestResultsDetails"
+        }
+      ],
+      "targets": {
+        "TestResultsList": {
+          "type": "Component",
+          "id": "TestResultsList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/TestResults",
+              "navigation": {
+                "TestResults": {
+                  "detail": {
+                    "route": "TestResultsDetails"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "TestResultsDetails": {
+          "type": "Component",
+          "id": "TestResultsDetails",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "contextPath": "/TestResults"
+            }
+          }
+        }
+      }
+    }
+  }
+}
