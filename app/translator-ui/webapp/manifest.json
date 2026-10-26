@@ -57,6 +57,7 @@
           "options": {
             "settings": {
               "contextPath": "/TestResults",
+              "initialLoad": true,
               "navigation": {
                 "TestResults": {
                   "detail": {

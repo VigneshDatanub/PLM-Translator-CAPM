@@ -11,6 +11,9 @@ service TranslatorService @(path: '/api/translator') {
     @readonly
     entity TranslationJobs as projection on my.TranslationJobs;
 
+    @readonly
+    entity Languages       as projection on my.Languages;
+
     // Type definition for language items
     type LanguageItem {
         code : String;

@@ -118,10 +118,18 @@ annotate service.TestResults with @(
 );
 
 // Annotations for Language Dropdown Value Help
+annotate service.Languages with {
+    code @(
+        Common.Text            : text,
+        Common.TextArrangement : #TextLast
+    );
+};
+
 annotate service.TestResults {
     targetLanguage @(
-        Common.Label : 'Target Language',
-        Common.ValueList : {
+        Common.Label                   : 'Target Language',
+        Common.ValueListWithFixedValues : true,
+        Common.ValueList               : {
             CollectionPath : 'Languages',
             Label          : 'Supported Languages',
             Parameters     : [

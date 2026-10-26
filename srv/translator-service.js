@@ -3,7 +3,7 @@ import axios from 'axios';
 import xlsx from 'xlsx';
 
 export default cds.service.impl(async function () {
-    const { TestResults, TranslationJobs } = this.entities;
+    const { TestResults, TranslationJobs, Languages } = this.entities;
     const { SELECT, INSERT, UPDATE } = cds.ql;
 
     const GCP_API_KEY = process.env.GCP_TRANSLATE_API_KEY || '';
@@ -45,13 +45,17 @@ export default cds.service.impl(async function () {
     // 2. Dynamic Supported Languages List
     this.on('getSupportedLanguages', async (req) => {
         if (!GCP_API_KEY) {
+            const dbLangs = await SELECT.from(Languages);
+            if (dbLangs && dbLangs.length > 0) {
+                return dbLangs.map((l) => ({ code: l.code, text: l.text }));
+            }
             return [
-                { code: 'en', key: 'en', text: 'English' },
-                { code: 'de', key: 'de', text: 'German' },
-                { code: 'es', key: 'es', text: 'Spanish' },
-                { code: 'fr', key: 'fr', text: 'French' },
-                { code: 'ja', key: 'ja', text: 'Japanese' },
-                { code: 'zh-CN', key: 'zh-CN', text: 'Chinese (Simplified)' }
+                { code: 'en', text: 'English' },
+                { code: 'de', text: 'German' },
+                { code: 'es', text: 'Spanish' },
+                { code: 'fr', text: 'French' },
+                { code: 'ja', text: 'Japanese' },
+                { code: 'zh-CN', text: 'Chinese (Simplified)' }
             ];
         }
 
@@ -62,12 +66,11 @@ export default cds.service.impl(async function () {
 
             return response.data.data.languages.map((l) => ({
                 code: l.language,
-                key: l.language,
                 text: l.name || l.language
             }));
         } catch (err) {
             req.warn(400, `Could not fetch Google languages: ${err.message}`);
-            return [];
+            return await SELECT.from(Languages);
         }
     });
 

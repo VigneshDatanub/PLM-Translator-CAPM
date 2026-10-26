@@ -31,3 +31,11 @@ entity TranslationJobs : cuid, managed {
     status         : String(20) default 'PENDING'; // 'PENDING', 'IN_PROGRESS', 'COMPLETED', 'FAILED'
     errorMessage   : LargeString;
 }
+
+/**
+ * Supported Languages for Value Help
+ */
+entity Languages {
+    key code : String(50);
+        text : String(100);
+}
