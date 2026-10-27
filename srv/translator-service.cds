@@ -51,6 +51,9 @@ service TranslatorService @(path: '/api/translator') {
         totalRows : Integer;
     };
 
+    // Force synchronize supported languages from Google Cloud Translation API
+    action   syncSupportedLanguages()               returns Integer;
+
     // List supported languages from Google Translate
     function getSupportedLanguages()               returns array of LanguageItem;
 

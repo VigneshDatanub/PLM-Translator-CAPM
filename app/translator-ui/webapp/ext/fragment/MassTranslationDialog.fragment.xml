@@ -1,0 +1,78 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:u="sap.ui.unified">
+    <Dialog
+        title="Mass Translation (Excel Batch)"
+        contentWidth="560px"
+        resizable="true"
+        draggable="true">
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <MessageStrip
+                    text="Upload an Excel (.xlsx or .xls) file containing phrases to translate. Rows should contain a column titled 'Phrase Text' or 'Text'."
+                    type="Information"
+                    showIcon="true"
+                    class="sapUiSmallMarginBottom" />
+
+                <form:SimpleForm
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+                    columnsXL="1" columnsL="1" columnsM="1">
+                    <form:content>
+                        <Label text="Excel File (.xlsx)" required="true" />
+                        <u:FileUploader
+                            id="massFileUploader"
+                            width="100%"
+                            fileType="xlsx,xls"
+                            placeholder="Choose Excel file from your computer..."
+                            change="onMassFileSelected" />
+
+                        <Label text="Selected File" visible="{= ${massTranslate>/fileName} !== '' }" />
+                        <Text text="{massTranslate>/fileName}" visible="{= ${massTranslate>/fileName} !== '' }" />
+
+                        <Label text="Target Languages" required="true" />
+                        <MultiComboBox
+                            id="massTargetLanguages"
+                            selectedKeys="{massTranslate>/targetLanguages}"
+                            items="{
+                                path: '/Languages',
+                                length: 500
+                            }"
+                            width="100%"
+                            placeholder="Select one or more target languages...">
+                            <core:Item key="{code}" text="{text} ({code})" />
+                        </MultiComboBox>
+
+                        <Label text="Tested By" />
+                        <Input
+                            value="{massTranslate>/testedBy}"
+                            width="100%"
+                            placeholder="e.g. Mass Batch Import" />
+
+                        <core:Title text="Batch Job Progress" visible="{= ${massTranslate>/statusMessage} !== '' }" />
+
+                        <Label text="Status" visible="{= ${massTranslate>/statusMessage} !== '' }" />
+                        <Text text="{massTranslate>/statusMessage}" visible="{= ${massTranslate>/statusMessage} !== '' }" />
+
+                        <Label text="Job ID" visible="{= ${massTranslate>/jobId} !== '' }" />
+                        <Text text="{massTranslate>/jobId}" visible="{= ${massTranslate>/jobId} !== '' }" />
+                    </form:content>
+                </form:SimpleForm>
+            </VBox>
+        </content>
+        <beginButton>
+            <Button
+                text="Start Batch Translation"
+                icon="sap-icon://begin"
+                type="Emphasized"
+                press="onExecuteMassTranslate"
+                busy="{massTranslate>/busy}" />
+        </beginButton>
+        <endButton>
+            <Button text="Close" press="onCloseMassDialog" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

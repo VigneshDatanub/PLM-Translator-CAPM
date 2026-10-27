@@ -1,0 +1,100 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form">
+    <Dialog
+        title="Single Text Translation"
+        contentWidth="560px"
+        resizable="true"
+        draggable="true">
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <form:SimpleForm
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+                    columnsXL="1" columnsL="1" columnsM="1">
+                    <form:content>
+                        <Label text="Source Text" required="true" />
+                        <TextArea
+                            value="{singleTranslate>/text}"
+                            rows="3"
+                            width="100%"
+                            placeholder="Enter text or phrase in any language..." />
+
+                        <Label text="Target Language" required="true" />
+                        <ComboBox
+                            selectedKey="{singleTranslate>/targetLanguage}"
+                            items="{
+                                path: '/Languages',
+                                length: 500
+                            }"
+                            width="100%"
+                            placeholder="Select Google-supported target language...">
+                            <core:Item key="{code}" text="{text} ({code})" />
+                        </ComboBox>
+
+                        <Label text="" />
+                        <Button
+                            text="Translate via Google"
+                            icon="sap-icon://translate"
+                            type="Emphasized"
+                            press="onExecuteSingleTranslate"
+                            busy="{singleTranslate>/busy}" />
+
+                        <core:Title text="Translation Result" />
+
+                        <Label text="Detected Source" />
+                        <Text text="{singleTranslate>/detectedLanguage}" />
+
+                        <Label text="Translated Output" />
+                        <TextArea
+                            value="{singleTranslate>/translatedText}"
+                            rows="3"
+                            width="100%"
+                            editable="false"
+                            placeholder="Translated text will appear here..." />
+
+                        <core:Title text="QA &amp; Verification (Optional)" />
+
+                        <Label text="Status Outcome" />
+                        <Select selectedKey="{singleTranslate>/outcome}" width="100%">
+                            <core:Item key="Success" text="Success (Green)" />
+                            <core:Item key="Partial" text="Partial (Yellow)" />
+                            <core:Item key="Failure" text="Failure (Red)" />
+                        </Select>
+
+                        <Label text="Accuracy (%)" />
+                        <StepInput
+                            value="{singleTranslate>/accuracy}"
+                            min="0"
+                            max="100"
+                            step="5"
+                            width="100%" />
+
+                        <Label text="Tested By" />
+                        <Input value="{singleTranslate>/testedBy}" width="100%" placeholder="Tester / Reviewer name" />
+
+                        <Label text="Observation Notes" />
+                        <TextArea
+                            value="{singleTranslate>/observation}"
+                            rows="2"
+                            width="100%"
+                            placeholder="Review observations, glossary feedback..." />
+                    </form:content>
+                </form:SimpleForm>
+            </VBox>
+        </content>
+        <beginButton>
+            <Button
+                text="Save to Records"
+                icon="sap-icon://save"
+                type="Accept"
+                press="onSaveSingleResult"
+                enabled="{= ${singleTranslate>/translatedText} !== '' }" />
+        </beginButton>
+        <endButton>
+            <Button text="Close" press="onCloseSingleDialog" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

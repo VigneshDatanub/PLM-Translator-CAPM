@@ -21,7 +21,21 @@
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
+        "sap.ui.unified": {},
+        "sap.ui.layout": {},
         "sap.fe.templates": {}
+      }
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ListReport.ListReportController#sap.plm.translator::TestResultsList": {
+            "controllerName": "sap.plm.translator.ext.controller.ListReportExtension"
+          },
+          "sap.fe.templates.ListReport.ListReportController": {
+            "controllerName": "sap.plm.translator.ext.controller.ListReportExtension"
+          }
+        }
       }
     },
     "models": {
@@ -58,6 +72,26 @@
             "settings": {
               "contextPath": "/TestResults",
               "initialLoad": true,
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "actions": {
+                    "SingleTranslate": {
+                      "text": "Single Translation",
+                      "press": ".extension.sap.plm.translator.ext.controller.ListReportExtension.onSingleTranslate",
+                      "visible": true,
+                      "enabled": true,
+                      "requiresSelection": false
+                    },
+                    "MassTranslate": {
+                      "text": "Mass Translation (Excel)",
+                      "press": ".extension.sap.plm.translator.ext.controller.ListReportExtension.onMassTranslate",
+                      "visible": true,
+                      "enabled": true,
+                      "requiresSelection": false
+                    }
+                  }
+                }
+              },
               "navigation": {
                 "TestResults": {
                   "detail": {
